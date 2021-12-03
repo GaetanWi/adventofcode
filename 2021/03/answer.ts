@@ -32,38 +32,26 @@ for (let i = 0; i < BINARY_INPUT_LENGTH; i++) {
 let gammaRateBinary = defaultPattern;
 let epsilonRateBinary = defaultPattern;
 
-const map = new Map();
-for (let i = 0; i < input.length; i++) {
-    for (let j = 0; j < BINARY_INPUT_LENGTH; j++) {
-        if (map.get(j)) {
-            input[i][j] === '0' ? map.get(j).nb0++ : map.get(j).nb1++;
-        } else {
-            input[i][j] === '0' ? map.set(j, {nb0: 1, nb1: 0}) : map.set(j, {nb0: 0, nb1: 1});
-        }
-    }
-}
-
-for (const [key, value] of map.entries()) {
-    if (value.nb0 > value.nb1) {
-        gammaRateBinary = replaceCharAt(gammaRateBinary, key, '0');
-        epsilonRateBinary = replaceCharAt(epsilonRateBinary, key, '1');
-    } else {
-        gammaRateBinary = replaceCharAt(gammaRateBinary, key, '1');
-        epsilonRateBinary = replaceCharAt(epsilonRateBinary, key, '0');
-    }
-}
-
-const gammaDecimal = decodeBinary(gammaRateBinary);
-const epsilonDecimal = decodeBinary(epsilonRateBinary);
-
-console.log(gammaDecimal * epsilonDecimal);
-
-
-// PART TWO
+// PART ONE & TWO
 let scrubberList = JSON.parse(JSON.stringify(input));
 let oxygenList = JSON.parse(JSON.stringify(input));
 
 for (let k = 0; k < BINARY_INPUT_LENGTH; k++) {
+    // PART ONE
+    let sumInp0 = 0, sumInp1 = 0
+    for (const inp of input) {
+        inp.charAt(k) === '0' ? sumInp0++ : sumInp1++;
+    }
+
+    if (sumInp0 > sumInp1) {
+        gammaRateBinary = replaceCharAt(gammaRateBinary, k, '0');
+        epsilonRateBinary = replaceCharAt(epsilonRateBinary, k, '1');
+    } else {
+        gammaRateBinary = replaceCharAt(gammaRateBinary, k, '1');
+        epsilonRateBinary = replaceCharAt(epsilonRateBinary, k, '0');
+    }
+
+    // PART TWO
     let sumScr0 = 0, sumScr1 = 0;
     for (const scr of scrubberList) {
         scr.charAt(k) === '0' ? sumScr0++ : sumScr1++;
@@ -83,6 +71,13 @@ for (let k = 0; k < BINARY_INPUT_LENGTH; k++) {
     }
 }
 
+// PART ONE RESULT
+const gammaDecimal = decodeBinary(gammaRateBinary);
+const epsilonDecimal = decodeBinary(epsilonRateBinary);
+
+console.log(gammaDecimal * epsilonDecimal);
+
+// PART TWO RESULT
 const oxygenGeneratorDecimal = decodeBinary(oxygenList[0]);
 const scrubberRatingDecimal = decodeBinary(scrubberList[0]);
 
