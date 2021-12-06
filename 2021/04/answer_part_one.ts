@@ -9,7 +9,7 @@ const BOARD_LENGTH = 5;
 const calledNumbers = input[0].split(",");
 const boards = input.slice(1);
 
-const formattedBoards = boards.map(board => board.split("\r\n"))
+let formattedBoards = boards.map(board => board.split("\r\n"))
     .map(board => board.map(l => l.trimStart().split(" ")
         .map(val => {
             if (!!val) {
@@ -18,6 +18,8 @@ const formattedBoards = boards.map(board => board.split("\r\n"))
         })
         .filter(l => !!l)));
 
+
+// PART ONE
 function findWinningBoard() {
     for (const number of calledNumbers) {
         for (const board of formattedBoards) {
@@ -50,7 +52,7 @@ function findWinningBoard() {
 const {winningBoard, lastNumber} = findWinningBoard();
 console.log(winningBoard);
 
-const unmarkedNumbers = [];
+let unmarkedNumbers = [];
 for (let i = 0; i < BOARD_LENGTH; i++) {
     for (let j = 0; j < BOARD_LENGTH; j++) {
         if (!winningBoard[i][j].found) {
@@ -59,5 +61,5 @@ for (let i = 0; i < BOARD_LENGTH; i++) {
     }
 }
 
-const unmarkedSum = unmarkedNumbers.reduce((acc, curr) => acc += parseInt(curr), 0);
-console.log(unmarkedSum * lastNumber);
+let unmarkedSum = unmarkedNumbers.reduce((acc, curr) => acc += parseInt(curr), 0);
+console.log(unmarkedSum * parseInt(lastNumber));
